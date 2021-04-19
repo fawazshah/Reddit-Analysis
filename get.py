@@ -1,5 +1,9 @@
+import json
 import praw
 from pprint import pprint
+
+# To print all object attribute names + values in json format
+# print(json.dumps(vars(obj), default=lambda o: str(o)))
 
 reddit = praw.Reddit("bias-bot", user_agent="bias-detection:v1.0 (by Fawaz Shah)")
 
@@ -13,4 +17,4 @@ for submission in liberal.top(limit=100):
     submission.comments.replace_more()
 
     comment_tree = submission.comments.list()
-    pprint(len(comment_tree))
+    print(len(comment_tree))
