@@ -16,5 +16,5 @@ for submission in liberal.top(limit=100):
     # Resolves instances of MoreComments in comment tree
     submission.comments.replace_more()
 
-    comment_tree = submission.comments.list()
-    print(len(comment_tree))
+    comment_list = submission.comments.list()
+    comment = comment_list[0]
