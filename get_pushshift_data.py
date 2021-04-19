@@ -1,10 +1,15 @@
 import json
+from more_itertools import chunked
 
-n = 1000
-comments = []
+batch_size = 100000
+
 with open('pushshift_data/comments/2019-12-15.json', 'r') as f:
-    first_n_lines = [next(f) for i in range(n)]
-    for json_obj in first_n_lines:
-        comments.append(json.loads(json_obj))
 
-print(json.dumps(comments[0]))
+    # Since file sizes are extremely large, we split into batches
+    chunks = list(chunked(f, batch_size))
+
+    for chunk in chunks:
+        print(len(chunk))
+        comments = []
+        for json_obj in chunk:
+            comments.append(json.loads(json_obj))
