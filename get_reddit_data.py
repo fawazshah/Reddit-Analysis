@@ -2,61 +2,42 @@ import json
 import praw
 from newspaper import Article
 import pandas as pd
+from pandas.io.json import json_normalize
 
 
-articles_df = pd.DataFrame(
-    columns=["submission id", "article headline", "article body", "bias"]
-)
-comments_df = pd.DataFrame(
-    columns=["comment id", "submission id", "comment body", "bias"]
-)
-
-ground_truths_df = pd.read_csv("data/corpus-balanced-classes.tsv", sep="\t")
+articles_df = pd.DataFrame()
+comments_df = pd.DataFrame()
 
 reddit = praw.Reddit("bias-bot", user_agent="bias-detection:v1.0 (by Fawaz Shah)")
 
 subreddits = [
-    (reddit.subreddit("liberal"), "left"),
-    (reddit.subreddit("democrats"), "left"),
-    (reddit.subreddit("conservative"), "right"),
-    (reddit.subreddit("republicans"), "right"),
+    reddit.subreddit("liberal"),
+    reddit.subreddit("democrats"),
+    reddit.subreddit("conservative"),
+    reddit.subreddit("republicans"),
 ]
 
-for subreddit, ground_truth_bias in subreddits:
+for subreddit in subreddits:
 
-    print(f"\nr/{subreddit.display_name.upper()}\n")
+    print(f"R/{subreddit.display_name.upper()}\n")
 
     for submission in subreddit.top("year", limit=1000):
 
         # Only select posts that are link posts and have score > 10
         if submission.selftext == "" and submission.score > 10:
 
-            # Scraping article content
-            article = Article(submission.url)
-            try:
-                article.download()
-                article.parse()
-            except Exception as err:
-                print("continuing...")
-                continue
-
-            new_row = {
-                "submission id": submission.id,
-                "article headline": submission.title,
-                "article body": article.text,
-                "bias": ground_truth_bias,
-            }
-            articles_df = articles_df.append(new_row, ignore_index=True)
+            submission_attributes = vars(submission)
+            articles_df = articles_df.append(submission_attributes, ignore_index=True)
+            print(articles_df.shape)
 
             # Resolves instances of MoreComments in comment tree
             submission.comments.replace_more()
 
             comment_list = submission.comments.list()
             for comment in comment_list:
-                new_row = {
-                    'comment id': comment.id,
-                    'submission id': comment._submission,
-                    'comment body': comment.body,
-                    'bias': ground_truth_bias,
-                }
-                comments_df = comments_df.append(new_row, ignore_index=True)
+
+                # Only select comments with score > 10
+                if comment.score > 10:
+                    comment_attributes = vars(comment)
+                    comments_df = comments_df.append(comment_attributes, ignore_index=True)
+                    print(comments_df.shape)
