@@ -21,7 +21,7 @@ for subreddit in subreddits:
 
     print(f"R/{subreddit.display_name.upper()}\n")
 
-    for submission in subreddit.top("year", limit=1000):
+    for submission in subreddit.top("year", limit=300):
 
         # Only select posts that are link posts and have score > 10
         if submission.selftext == "" and submission.score > 10:
@@ -41,3 +41,8 @@ for subreddit in subreddits:
                     comment_attributes = vars(comment)
                     comments_df = comments_df.append(comment_attributes, ignore_index=True)
                     print(comments_df.shape)
+    
+        # Save data to file after every submission
+        articles_df.to_csv('data/articles.tsv', sep='\t', index=False)
+        comments_df.to_csv('data/comments.tsv', sep='\t', index=False)
+    
