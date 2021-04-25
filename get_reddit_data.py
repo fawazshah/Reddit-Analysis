@@ -40,7 +40,7 @@ for subreddit in subreddits:
                 if comment.score > 10:
                     comment_attributes = vars(comment)
                     comments_df = comments_df.append(comment_attributes, ignore_index=True)
-                    print(comments_df.shape)
+            print(comments_df.shape)
     
         # Save data to file after every submission
         articles_df.to_csv('data/articles.tsv', sep='\t', index=False)
