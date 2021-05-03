@@ -4,12 +4,15 @@ import pandas as pd
 from pandas.io.json import json_normalize
 
 
-articles_df = pd.DataFrame()
+submissions_df = pd.DataFrame()
 comments_df = pd.DataFrame()
 
 reddit = praw.Reddit("bias-bot", user_agent="bias-detection:v1.0 (by Fawaz Shah)")
 
 subreddits = [
+    reddit.subreddit("obama"),
+    reddit.subreddit("hillaryclinton"),
+
     reddit.subreddit("liberal"),
     reddit.subreddit("democrats"),
     reddit.subreddit("conservative"),
@@ -26,8 +29,8 @@ for subreddit in subreddits:
         if submission.selftext == "" and submission.score > 10:
 
             submission_attributes = vars(submission)
-            articles_df = articles_df.append(submission_attributes, ignore_index=True)
-            print(articles_df.shape)
+            submissions_df = submissions_df.append(submission_attributes, ignore_index=True)
+            print(submissions_df.shape)
 
             # Resolves instances of MoreComments in comment tree
             submission.comments.replace_more()
@@ -42,6 +45,6 @@ for subreddit in subreddits:
             print(comments_df.shape)
     
         # Save data to file after every submission
-        articles_df.to_csv('data/articles.tsv', sep='\t', index=False)
+        submissions_df.to_csv('data/submissions.tsv', sep='\t', index=False)
         comments_df.to_csv('data/comments.tsv', sep='\t', index=False)
     
