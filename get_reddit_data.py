@@ -1,6 +1,5 @@
 import json
 import praw
-from newspaper import Article
 import pandas as pd
 from pandas.io.json import json_normalize
 
