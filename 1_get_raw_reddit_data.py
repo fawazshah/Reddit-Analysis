@@ -45,6 +45,6 @@ for subreddit in subreddits:
             print(comments_df.shape)
     
         # Save data to file after every submission
-        submissions_df.to_csv('data/submissions.tsv', sep='\t', index=False)
-        comments_df.to_csv('data/comments.tsv', sep='\t', index=False)
+        submissions_df.to_csv('data/raw-reddit-responses/submissions.tsv', sep='\t', index=False)
+        comments_df.to_csv('data/raw-reddit-responses/comments.tsv', sep='\t', index=False)
     
