@@ -21,10 +21,10 @@ num_submissions = len(submissions)
 num_comments = len(comments)
 
 submissions_df = pd.DataFrame(
-    columns=["submission id", "article headline", "article body", "bias"]
+    columns=["submission id", "subreddit", "article headline", "article body", "bias"]
 )
 comments_df = pd.DataFrame(
-    columns=["comment id", "submission id", "comment body", "bias"]
+    columns=["comment id", "submission id", "subreddit", "comment body", "bias"]
 )
 
 for i, submission in submissions.iterrows():
@@ -43,6 +43,7 @@ for i, submission in submissions.iterrows():
 
     new_row = {
         "submission id": submission["id"],
+        "subreddit": submission['subreddit'].lower(),
         "article headline": submission["title"],
         "article body": article.text,
         "bias": ground_truth_bias,
@@ -64,6 +65,7 @@ for i, comment in comments.iterrows():
     new_row = {
         "comment id": comment["id"],
         "submission id": comment["_submission"],
+        "subreddit": comment['subreddit'].lower(),
         "comment body": comment["body"],
         "bias": ground_truth_bias,
     }
