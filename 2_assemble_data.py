@@ -37,6 +37,7 @@ for i, submission in submissions.iterrows():
         article.download()
         article.parse()
     except Exception as err:
+        print(f"Error with {submission['url']}")
         continue
 
     ground_truth_bias = subreddit_bias_map[submission["subreddit"].lower()]
