@@ -40,6 +40,9 @@ for i, submission in submissions.iterrows():
         print(f"Error with {submission['url']}")
         continue
 
+    if article.text == "":
+        continue
+
     ground_truth_bias = subreddit_bias_map[submission["subreddit"].lower()]
 
     new_row = {
