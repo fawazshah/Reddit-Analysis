@@ -41,6 +41,7 @@ for i, submission in submissions.iterrows():
         continue
 
     if article.text == "":
+        print(f"Can't get article body from {submission['url']}")
         continue
 
     ground_truth_bias = subreddit_bias_map[submission["subreddit"].lower()]
