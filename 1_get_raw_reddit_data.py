@@ -12,11 +12,7 @@ reddit = praw.Reddit("bias-bot", user_agent="bias-detection:v1.0 (by Fawaz Shah)
 subreddits = [
     reddit.subreddit("obama"),
     reddit.subreddit("hillaryclinton"),
-
-    reddit.subreddit("liberal"),
-    reddit.subreddit("democrats"),
-    reddit.subreddit("conservative"),
-    reddit.subreddit("republicans"),
+    reddit.subreddit("shitliberalssay")
 ]
 
 for subreddit in subreddits:
@@ -30,7 +26,7 @@ for subreddit in subreddits:
 
             submission_attributes = vars(submission)
             submissions_df = submissions_df.append(submission_attributes, ignore_index=True)
-            print(submissions_df.shape)
+            print(f"Number of submissions: {len(submissions_df)}", end='\r')
 
             # Resolves instances of MoreComments in comment tree
             submission.comments.replace_more()
@@ -42,7 +38,7 @@ for subreddit in subreddits:
                 if comment.score > 10:
                     comment_attributes = vars(comment)
                     comments_df = comments_df.append(comment_attributes, ignore_index=True)
-            print(comments_df.shape)
+            print(f"Number of submissions: {len(submissions_df)}, number of comments: {len(comments_df)}", end='\r')
     
         # Save data to file after every submission
         submissions_df.to_csv('data/raw-reddit-responses/submissions.tsv', sep='\t', index=False)
