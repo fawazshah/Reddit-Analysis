@@ -1,7 +1,7 @@
 import pandas as pd
 
-submissions = pd.read_csv('data/assembled-data/submissions_top300_year_libertarian_sandersforpresident.tsv', sep='\t')
-comments = pd.read_csv('data/assembled-data/comments_top300_year_libertarian_sandersforpresident.tsv', sep='\t')
+submissions = pd.read_csv('data/assembled-data/submissions_top300_year_liberal_democrats_conservative.tsv', sep='\t')
+comments = pd.read_csv('data/assembled-data/comments_top300_year_liberal_democrats_conservative.tsv', sep='\t')
 
 print(f"No. articles: {len(submissions)}")
 

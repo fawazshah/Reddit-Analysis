@@ -10,9 +10,6 @@ comments_df = pd.DataFrame()
 reddit = praw.Reddit("bias-bot", user_agent="bias-detection:v1.0 (by Fawaz Shah)")
 
 subreddits = [
-    reddit.subreddit("liberal"),
-    reddit.subreddit("conservative"),
-    reddit.subreddit("democrats"),
     reddit.subreddit("republican")
 ]
 
