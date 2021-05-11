@@ -9,4 +9,4 @@ print(len(comments_df))
 submission_ids = list(submissions_df['id'])
 for i, row in comments_df.iterrows():
     if row['_submission'] not in submission_ids:
-        print("hellooo")
+        print("Integrity error!")
