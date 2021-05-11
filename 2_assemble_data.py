@@ -5,7 +5,7 @@ subreddit_bias_map = {
     "liberal": "left",
     "democrats": "left",
     "conservative": "right",
-    "republicans": "right",
+    "republican": "right",
     "obama": "left",
     "hillaryclinton": "left",
     "shitliberalssay": "right",
@@ -14,11 +14,11 @@ subreddit_bias_map = {
 }
 
 submissions = pd.read_csv(
-    "data/raw-reddit-responses/submissions_top300_year_libertarian_sandersforpresident.tsv",
+    "data/raw-reddit-responses/submissions_top300_year_republican.tsv",
     sep="\t",
 )
 comments = pd.read_csv(
-    "data/raw-reddit-responses/comments_top300_year_libertarian_sandersforpresident.tsv",
+    "data/raw-reddit-responses/comments_top300_year_republican.tsv",
     sep="\t",
 )
 
@@ -32,6 +32,8 @@ comments_df = pd.DataFrame(
     columns=["comment id", "submission id", "subreddit", "comment body", "bias"]
 )
 
+submissions_to_drop = []
+
 for i, submission in submissions.iterrows():
 
     print(f"Submission {i+1} / {num_submissions}")
@@ -43,10 +45,12 @@ for i, submission in submissions.iterrows():
         article.parse()
     except Exception as err:
         print(f"Error with {submission['url']}")
+        submissions_to_drop.append(submission['id'])
         continue
 
     if article.text == "":
         print(f"Can't get article body from {submission['url']}")
+        submissions_to_drop.append(submission['id'])
         continue
 
     ground_truth_bias = subreddit_bias_map[submission["subreddit"].lower()]
@@ -60,7 +64,7 @@ for i, submission in submissions.iterrows():
     }
     submissions_df = submissions_df.append(new_row, ignore_index=True)
     submissions_df.to_csv(
-        "data/assembled-data/submissions_top300_year_libertarian_sandersforpresident.tsv",
+        "data/assembled-data/submissions_top300_year_republican.tsv",
         sep="\t",
         index=False,
     )
@@ -72,6 +76,9 @@ for i, comment in comments.iterrows():
 
     ground_truth_bias = subreddit_bias_map[comment["subreddit"].lower()]
 
+    if comment['_submission'] in submissions_to_drop:
+        continue
+
     new_row = {
         "comment id": comment["id"],
         "submission id": comment["_submission"],
@@ -81,7 +88,7 @@ for i, comment in comments.iterrows():
     }
     comments_df = comments_df.append(new_row, ignore_index=True)
     comments_df.to_csv(
-        "data/assembled-data/comments_top300_year_libertarian_sandersforpresident.tsv",
+        "data/assembled-data/comments_top300_year_republican.tsv",
         sep="\t",
         index=False,
     )
