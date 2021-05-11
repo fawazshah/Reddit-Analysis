@@ -14,11 +14,11 @@ subreddit_bias_map = {
 }
 
 submissions = pd.read_csv(
-    "data/raw-reddit-responses/submissions_top300_year_republican.tsv",
+    "data/raw-reddit-responses/submissions_top300_year_liberal_democrats_conservative.tsv",
     sep="\t",
 )
 comments = pd.read_csv(
-    "data/raw-reddit-responses/comments_top300_year_republican.tsv",
+    "data/raw-reddit-responses/comments_top300_year_liberal_democrats_conservative.tsv",
     sep="\t",
 )
 
@@ -64,7 +64,7 @@ for i, submission in submissions.iterrows():
     }
     submissions_df = submissions_df.append(new_row, ignore_index=True)
     submissions_df.to_csv(
-        "data/assembled-data/submissions_top300_year_republican.tsv",
+        "data/assembled-data/submissions_top300_year_liberal_democrats_conservative.tsv",
         sep="\t",
         index=False,
     )
@@ -88,7 +88,7 @@ for i, comment in comments.iterrows():
     }
     comments_df = comments_df.append(new_row, ignore_index=True)
     comments_df.to_csv(
-        "data/assembled-data/comments_top300_year_republican.tsv",
+        "data/assembled-data/comments_top300_year_liberal_democrats_conservative.tsv",
         sep="\t",
         index=False,
     )

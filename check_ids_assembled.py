@@ -1,7 +1,7 @@
 import pandas as pd
 
-submissions_df = pd.read_csv('data/assembled-data/submissions_top300_year_republican.tsv', sep='\t')
-comments_df = pd.read_csv('data/assembled-data/comments_top300_year_republican.tsv', sep='\t')
+submissions_df = pd.read_csv('data/assembled-data/submissions_top300_year_liberal_democrats_conservative.tsv', sep='\t')
+comments_df = pd.read_csv('data/assembled-data/comments_top300_year_liberal_democrats_conservative.tsv', sep='\t')
 
 print(len(submissions_df))
 print(len(comments_df))
